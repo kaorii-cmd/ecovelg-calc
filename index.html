@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>EcoVeg Calc Pro — Aplikasi Analisis Vegetasi</title>
     <style>
         /* --- BRANDING COLOR PALETTE --- */
@@ -11,7 +11,7 @@
             --primary-main: #1b4332;
             --primary-light: #2d6a4f;
             --accent-green: #52b788;
-            --bg-botanical: #eef5f1; /* Hijau sage sangat lembut, tidak putih silau */
+            --bg-botanical: #eef5f1; 
             --card-green: #f7faf8;
             --text-dark: #0f172a;
             --text-muted: #475569;
@@ -23,7 +23,8 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -32,83 +33,116 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            padding-bottom: 70px; /* Jarak aman agar konten tidak tertutup bottom nav */
+        }
+
+        /* --- HEADER BRANDING --- */
+        .app-header {
+            background-color: var(--primary-main);
+            color: white;
+            padding: 1.1rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(19, 42, 19, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .app-brand-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- MOBILE BOTTOM NAVIGATION --- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 65px;
+            background-color: white;
+            border-top: 1px solid var(--border-green);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.04);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 600;
+            width: 33.33%;
+            height: 100%;
+            gap: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item svg {
+            width: 22px;
+            height: 22px;
+            transition: transform 0.2s ease;
+        }
+
+        .nav-item.active-nav {
+            color: var(--primary-light);
+        }
+
+        .nav-item.active-nav svg {
+            transform: scale(1.1);
+            stroke: var(--primary-light);
         }
 
         /* --- PAGE ROUTING ANIMATION --- */
         .page {
             display: none;
             opacity: 0;
-            min-height: 80vh;
         }
 
         .page.active {
-            display: flex;
-            flex-direction: column;
-            animation: fadeIn 0.4s forwards ease-in-out;
+            display: block;
+            animation: fadeIn 0.3s forwards ease-out;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- NAVIGATION --- */
-        .navbar {
-            background-color: var(--primary-main);
-            color: white;
-            padding: 1.25rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 20px rgba(19, 42, 19, 0.08);
-        }
-
-        .nav-brand {
-            font-weight: 700;
-            font-size: 1.35rem;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .nav-links a {
-            color: #f1f7f4;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-        }
-
-        .nav-links a:hover, .nav-links a.active-nav {
-            background-color: var(--primary-light);
-            color: white;
-        }
-
         .container {
-            max-width: 1200px;
             width: 100%;
-            margin: 2.5rem auto;
-            padding: 0 1.5rem;
-            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.25rem;
         }
 
         /* --- BUTTONS --- */
         .btn {
-            padding: 0.75rem 1.5rem;
+            padding: 0.75rem 1.25rem;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.2s ease;
             font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
         }
 
         .btn-primary {
@@ -116,89 +150,77 @@
             color: white;
         }
 
-        .btn-primary:hover {
-            background-color: var(--primary-light);
-            box-shadow: 0 4px 12px rgba(27,67,50,0.15);
-        }
-
         .btn-accent {
             background-color: var(--accent-green);
             color: var(--primary-dark);
         }
 
-        .btn-accent:hover {
-            opacity: 0.95;
-        }
-
         .btn-danger {
             background-color: var(--danger-red);
             color: white;
-            padding: 0.4rem 0.8rem;
+            padding: 0.5rem 0.75rem;
             font-size: 0.85rem;
+            border-radius: 6px;
         }
 
-        /* --- HIKAYAT BERANDA (LANDING PAGE) --- */
+        /* --- LANDING HERO SECTION --- */
         .hero-section {
             background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-dark) 100%);
             color: white;
-            padding: 4rem 3rem;
+            padding: 2.25rem 1.5rem;
             border-radius: 16px;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-            align-items: center;
-            box-shadow: 0 10px 30px rgba(19,42,19,0.15);
-            position: relative;
-            overflow: hidden;
-        }
-
-        @media(min-width: 768px) {
-            .hero-section { grid-template-columns: 1.2fr 0.8fr; }
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(19,42,19,0.12);
+            margin-bottom: 1.5rem;
         }
 
         .hero-text h1 {
-            font-size: 2.5rem;
-            line-height: 1.2;
-            margin-bottom: 1rem;
+            font-size: 1.75rem;
+            line-height: 1.3;
+            margin-bottom: 0.8rem;
         }
 
         .hero-text p {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             color: #d1e2d9;
-            margin-bottom: 2rem;
-            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
         }
 
         .hero-graphic svg {
             width: 100%;
-            max-height: 250px;
-            opacity: 0.9;
+            max-width: 160px;
+            margin: 1rem auto 0 auto;
+            display: block;
         }
 
-        /* --- MAIN PANELS (CALCULATOR UI) --- */
+        /* --- PANELS CONFIGURATION --- */
         .panel-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
         }
 
         @media(min-width: 992px) {
-            .panel-grid { grid-template-columns: 1.6fr 1fr; }
+            .panel-grid {
+                display: grid;
+                grid-template-columns: 1.5fr 1fr;
+            }
         }
 
         .panel {
             background-color: var(--card-green);
             border: 1px solid var(--border-green);
-            padding: 2rem;
+            padding: 1.5rem 1.25rem;
             border-radius: 14px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.01);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
         }
 
         .panel-heading {
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             font-weight: 700;
             color: var(--primary-dark);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.25rem;
             padding-bottom: 0.5rem;
             border-bottom: 2px solid var(--border-green);
         }
@@ -206,53 +228,61 @@
         .input-inline-group {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1.25rem;
+            gap: 1rem;
             margin-bottom: 1.5rem;
         }
 
         .input-block {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.4rem;
         }
 
         .input-block label {
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--primary-main);
         }
 
         .input-block input {
-            padding: 0.75rem;
+            padding: 0.7rem;
             border: 1px solid var(--border-green);
             border-radius: 8px;
-            background-color: white;
+            font-size: 0.95rem;
             outline: none;
         }
 
         .input-block input:focus {
             border-color: var(--primary-light);
-            box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.15);
         }
 
-        /* TABLES */
+        /* RESPONSIVE TABLES */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 1.25rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-green);
+            background: white;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 1.5rem;
+            min-width: 450px; /* Mencegah tabel gepeng di layar HP */
         }
 
         th {
-            background-color: rgba(45, 106, 79, 0.1);
+            background-color: rgba(45, 106, 79, 0.08);
             color: var(--primary-dark);
             padding: 0.75rem;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-align: left;
         }
 
         td {
-            padding: 0.75rem;
+            padding: 0.6rem 0.75rem;
             border-bottom: 1px solid var(--border-green);
         }
 
@@ -261,16 +291,17 @@
             padding: 0.5rem;
             border: 1px solid var(--border-green);
             border-radius: 6px;
+            font-size: 0.9rem;
         }
 
         /* RESULTS UI */
         .summary-box {
             background-color: var(--primary-dark);
             color: white;
-            padding: 1.25rem;
+            padding: 1.1rem;
             border-radius: 10px;
-            margin-bottom: 1.5rem;
-            font-size: 0.95rem;
+            margin-bottom: 1.25rem;
+            font-size: 0.9rem;
             line-height: 1.5;
         }
 
@@ -287,86 +318,66 @@
         .doc-wrapper {
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            gap: 1.25rem;
         }
 
         .doc-card {
             background-color: var(--card-green);
             border: 1px solid var(--border-green);
-            padding: 2.5rem;
+            padding: 1.5rem 1.25rem;
             border-radius: 14px;
         }
 
         .doc-card h2 {
             color: var(--primary-main);
-            font-size: 1.6rem;
-            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
         }
 
         .doc-card p {
             color: var(--text-muted);
-            line-height: 1.7;
-            margin-bottom: 1.25rem;
-            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
         }
 
         .formula-container {
             background-color: white;
             border: 1px solid var(--border-green);
-            padding: 1.2rem;
+            padding: 1rem;
             border-radius: 8px;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 0.95rem;
-            margin: 1rem 0;
+            font-size: 0.85rem;
+            margin: 0.75rem 0;
             color: var(--primary-dark);
             font-weight: 600;
-        }
-
-        /* --- FOOTER --- */
-        footer {
-            background-color: var(--primary-dark);
-            color: #a3b19b;
-            text-align: center;
-            padding: 1.5rem;
-            font-size: 0.85rem;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            overflow-x: auto;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <nav class="navbar">
-            <div class="nav-brand">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22C12 22 20 18 20 12C20 6 12 2 12 2C12 2 4 6 4 12C4 18 12 22 12 22Z"/><path d="M12 2V22"/></svg>
-                EcoVeg Calc Pro
-            </div>
-            <div class="nav-links">
-                <a id="nav-home" onclick="navigateTo('home-page')">Beranda</a>
-                <a id="nav-calc" onclick="navigateTo('calc-page')">Kalkulator INP</a>
-                <a id="nav-doc" onclick="navigateTo('doc-page')">Panduan & Kegunaan</a>
-            </div>
-        </nav>
+    <header class="app-header">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22C12 22 20 18 20 12C20 6 12 2 12 2C12 2 4 6 4 12C4 18 12 22 12 22Z"/><path d="M12 2V22"/></svg>
+        <div class="app-brand-title">EcoVeg Calc Pro</div>
     </header>
 
     <div id="home-page" class="page active">
         <div class="container">
             <div class="hero-section">
                 <div class="hero-text">
-                    <h1>Komputasi Data Vegetasi Tumbuhan Menjadi Lebih Mudah</h1>
-                    <p>EcoVeg Calc Pro dirancang khusus untuk membantu mengotomatisasi perhitungan struktur komunitas tumbuhan, menghilangkan kalkulasi manual yang memakan waktu di laboratorium.</p>
-                    <button class="btn btn-accent" onclick="navigateTo('calc-page')">Mulai Analisis Data</button>
+                    <h1>Analisis Vegetasi dalam Genggaman</h1>
+                    <p>Otomatisasi perhitungan struktur komunitas tumbuhan dan Indeks Nilai Penting (INP) laboratorium tanpa kalkulasi manual.</p>
+                    <button class="btn btn-accent" onclick="navigateTo('calc-page')">Mulai Hitung Data</button>
                 </div>
                 <div class="hero-graphic">
                     <svg viewBox="0 0 200 200" fill="none" stroke="#52b788" stroke-width="4">
                         <path d="M100 180 V80" stroke-linecap="round"/>
                         <path d="M100 130 Q70 110 50 120" stroke-linecap="round"/>
                         <path d="M100 110 Q130 90 150 100" stroke-linecap="round"/>
-                        <path d="M100 90 Q60 60 70 40" stroke-linecap="round"/>
                         <circle cx="50" cy="120" r="8" fill="#1b4332"/>
                         <circle cx="150" cy="100" r="10" fill="#1b4332"/>
-                        <circle cx="70" cy="40" r="12" fill="#1b4332"/>
-                        <circle cx="100" cy="50" r="15" fill="#1b4332"/>
+                        <circle cx="100" cy="65" r="14" fill="#1b4332"/>
                     </svg>
                 </div>
             </div>
@@ -381,57 +392,45 @@
                     <div class="panel-heading">Konfigurasi Data Lapangan</div>
                     <div class="input-inline-group">
                         <div class="input-block">
-                            <label>Luas Total Plot Utama (m²)</label>
-                            <input type="number" id="total-area" value="100">
+                            <label>Luas Total Plot (m²)</label>
+                            <input type="number" id="total-area" value="100" oninput="saveCurrentData()">
                         </div>
                         <div class="input-block">
-                            <label>Total Unit Petak Contoh</label>
-                            <input type="number" id="total-plots" value="10">
+                            <label>Total Sub-Plot</label>
+                            <input type="number" id="total-plots" value="10" oninput="saveCurrentData()">
                         </div>
                     </div>
 
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                        <h3 style="font-size: 1.05rem; color: var(--primary-dark)">Data Spesies yang Ditemukan</h3>
-                        <button class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.85rem;" onclick="addRow()">+ Tambah Baris</button>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                        <h3 style="font-size: 0.95rem; color: var(--primary-dark)">Data Spesies Tumbuhan</h3>
+                        <button class="btn btn-primary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="addRow()">+ Tambah</button>
                     </div>
 
-                    <div style="overflow-x: auto;">
+                    <div class="table-container">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Nama Spesies / Tumbuhan</th>
-                                    <th>Jumlah Individu (n)</th>
-                                    <th>Petak Ditemukan</th>
-                                    <th style="width: 70px; text-align: center;">Aksi</th>
+                                    <th>Nama Spesies</th>
+                                    <th>Individu (n)</th>
+                                    <th>Petak Hunian</th>
+                                    <th style="width: 65px; text-align: center;">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="species-table-body">
-                                <tr>
-                                    <td><input type="text" class="sp-name" value="Rhizophora apiculata"></td>
-                                    <td><input type="number" class="sp-count" value="40"></td>
-                                    <td><input type="number" class="sp-plots" value="7"></td>
-                                    <td style="text-align: center;"><button class="btn btn-danger" onclick="deleteRow(this)">Hapus</button></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="text" class="sp-name" value="Hibiscus tiliaceus"></td>
-                                    <td><input type="number" class="sp-count" value="25"></td>
-                                    <td><input type="number" class="sp-plots" value="4"></td>
-                                    <td style="text-align: center;"><button class="btn btn-danger" onclick="deleteRow(this)">Hapus</button></td>
-                                </tr>
-                            </tbody>
+                                </tbody>
                         </table>
                     </div>
 
-                    <button class="btn btn-primary" style="width: 100%; padding: 1rem; margin-top: 0.5rem;" onclick="processData()">
-                        Proses Perhitungan Struktur Komunitas
+                    <button class="btn btn-primary" style="width: 100%; padding: 0.85rem; margin-top: 0.25rem;" onclick="processData()">
+                        Proses Hitung Nilai Penting
                     </button>
                 </div>
 
                 <div class="panel">
                     <div class="panel-heading">Hasil Analisis Vegetasi</div>
                     <div id="results-wrapper">
-                        <p style="color: var(--text-muted); text-align: center; padding: 4rem 0; font-style: italic;">
-                            Silakan masukkan data lapangan di panel sebelah kiri lalu klik tombol proses untuk memunculkan visualisasi hasil.
+                        <p style="color: var(--text-muted); text-align: center; padding: 3rem 0; font-style: italic; font-size: 0.9rem;">
+                            Isi data lapangan lalu klik tombol proses untuk menampilkan urutan dominansi spesies.
                         </p>
                     </div>
                 </div>
@@ -443,81 +442,63 @@
     <div id="doc-page" class="page">
         <div class="container">
             <div class="doc-wrapper">
-                
                 <div class="doc-card">
-                    <h2>Mengenal Analisis Vegetasi dan Fungsi Aplikasi</h2>
-                    <p>Bagi masyarakat awam, hamparan hutan atau sabana mungkin hanya terlihat seperti kumpulan pepohonan yang tumbuh acak. Namun, di dalam ilmu ekologi, struktur tersebut merupakan sebuah komunitas teratur yang harus diukur secara kuantitatif untuk memahami kesehatan, stabilitas, dan dinamika masa depan ekosistem tersebut.</p>
-                    <p>Aplikasi <strong>EcoVeg Calc Pro</strong> dirancang khusus untuk mengotomatisasi perhitungan <strong>Indeks Nilai Penting (INP)</strong>. Tanpa bantuan software, seorang peneliti atau mahasiswa harus melakukan kalkulasi pecahan dan persentase secara manual berulang kali untuk setiap spesies yang ditemukan. Aplikasi ini memangkas waktu pengolahan data dari hitungan jam menjadi satu klik instan, sekaligus memperkecil risiko kesalahan hitung (*human error*).</p>
+                    <h2>Mengenal Analisis Vegetasi</h2>
+                    <p>Di dalam ilmu ekologi, struktur tumbuhan diukur secara kuantitatif untuk memahami tingkat dominansi, stabilitas, dan dinamika kesehatan ekosistem tersebut.</p>
+                    <p>Aplikasi <strong>EcoVeg Calc Pro</strong> mengotomatisasi perhitungan <strong>Indeks Nilai Penting (INP)</strong>, memangkas risiko *human error* dari hitungan berulang di atas kertas logbook lapangan.</p>
                 </div>
 
                 <div class="doc-card">
-                    <h2>Bagaimana Data Lapangan Dikumpulkan?</h2>
-                    <p>Sebelum menggunakan kalkulator di aplikasi ini, peneliti biasanya melakukan metode **Sampling Kuadrat (Petak Contoh)** di lapangan dengan langkah-langkah berikut:</p>
-                    
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1rem;">
-                        <div style="background: white; border: 1px solid var(--border-green); padding: 1.25rem; border-radius: 8px;">
-                            <h4 style="color: var(--primary-main); margin-bottom: 0.5rem;">1. Penentuan Plot</h4>
-                            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0;">Membuat plot utama di dalam hutan (misal ukuran 10m x 10m atau 20m x 20m) sebagai area batas pengamatan.</p>
-                        </div>
-                        <div style="background: white; border: 1px solid var(--border-green); padding: 1.25rem; border-radius: 8px;">
-                            <h4 style="color: var(--primary-main); margin-bottom: 0.5rem;">2. Pembagian Petak</h4>
-                            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0;">Membagi plot utama tersebut menjadi beberapa unit petak contoh yang lebih kecil (sub-plot) untuk mempermudah pencatatan sebaran pohon.</p>
-                        </div>
-                        <div style="background: white; border: 1px solid var(--border-green); padding: 1.25rem; border-radius: 8px;">
-                            <h4 style="color: var(--primary-main); margin-bottom: 0.5rem;">3. Identifikasi & Sensus</h4>
-                            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0;">Mencatat nama setiap spesies tanaman yang ditemukan, menghitung jumlah individunya, serta mencatat di sub-plot mana saja mereka muncul.</p>
-                        </div>
-                    </div>
+                    <h2>Aplikasi di Dunia Nyata</h2>
+                    <p>Parameter olah data software ini dimanfaatkan secara profesional pada beberapa sektor industri ekologi:</p>
+                    <p>• <strong>Konservasi:</strong> Memantau tingkat keberhasilan reboisasi hutan asli dari gangguan jenis invasif.</p>
+                    <p>• <strong>AMDAL & Audit:</strong> Dokumen wajib reklamasi pascatambang untuk membuktikan pemulihan keanekaragaman alam.</p>
+                    <p>• <strong>Karbon Hutan:</strong> Penentuan biomassa tegakan komoditas untuk menghitung penyerapan emisi gas rumah kaca ($CO_2$).</p>
                 </div>
 
                 <div class="doc-card">
-                    <h2>Di Mana Perhitungan INP Ini Digunakan di Dunia Nyata?</h2>
-                    <p>Perhitungan yang disediakan oleh software ini bukan sekadar tugas kuliah, melainkan instrumen vital yang digunakan secara profesional dalam berbagai industri lingkungan:</p>
-                    <ul style="margin-left: 1.5rem; color: var(--text-muted); line-height: 1.7; font-size: 1.05rem; display: flex; flex-direction: column; gap: 0.75rem;">
-                        <li><strong>Konservasi & Restorasi Hutan:</strong> Membantu LSM lingkungan mengetahui apakah proyek penanaman kembali (reboisasi) berhasil mengembalikan dominansi pohon asli setempat atau justru dikuasai oleh spesies invasif.</li>
-                        <li><strong>Audit Lingkungan & AMDAL:</strong> Perusahaan pertambangan atau perkebunan wajib mengukur INP vegetasi sebelum membuka lahan dan sesudah reklamasi untuk membuktikan tanggung jawab pemulihan alam.</li>
-                        <li><strong>Studi Perubahan Iklim:</strong> Memetakan pohon-pohon dengan INP tertinggi guna menghitung biomassa dan kapasitas penyerapan karbon dioksida ($CO_2$) secara akurat pada zona hutan tropis maupun mangrove.</li>
-                    </ul>
-                </div>
-
-                <div class="doc-card">
-                    <h2>Metodologi Perhitungan Matematis</h2>
-                    <p>Sistem pada menu kalkulator memproses komputasi secara berjenjang berdasarkan dua pilar parameter utama ekologi komunitas:</p>
-                    
-                    <h3 style="font-size: 1.1rem; color: var(--primary-dark); margin: 1.5rem 0 0.5rem 0;">A. Sektor Kerapatan (Density Parameter)</h3>
-                    <p>Mengukur seberapa padat populasi suatu jenis tumbuhan di area pengamatan.</p>
+                    <h2>Metodologi Rumus</h2>
+                    <h3 style="font-size: 1rem; color: var(--primary-dark); margin-top: 0.5rem;">Sektor Kerapatan</h3>
                     <div class="formula-container">
-                        • Kerapatan Absolut (K) = Total Individu Suatu Spesies / Luas Seluruh Plot Sampel (m²)<br>
-                        • Kerapatan Relatif (KR) = (Kerapatan Absolut Spesies / Total Kerapatan Seluruh Jenis) x 100%
+                        • Kerapatan Absolut = Individu / Luas Plot (m²)<br>
+                        • Kerapatan Relatif (KR) = (Kerapatan Jenis / Total Seluruh Kerapatan) x 100%
                     </div>
 
-                    <h3 style="font-size: 1.1rem; color: var(--primary-dark); margin: 1.5rem 0 0.5rem 0;">B. Sektor Frekuensi (Frequency Parameter)</h3>
-                    <p>Menggambarkan seberapa merata persebaran spasial tumbuhan tersebut (apakah hanya mengelompok di satu sudut atau tersebar di seluruh area).</p>
+                    <h3 style="font-size: 1rem; color: var(--primary-dark); margin-top: 0.5rem;">Sektor Frekuensi</h3>
                     <div class="formula-container">
-                        • Frekuensi Absolut (F) = Jumlah Unit Petak yang Dihuni Spesies / Total Seluruh Unit Petak<br>
-                        • Frekuensi Relatif (FR) = (Frekuensi Absolut Spesies / Total Frekuensi Seluruh Jenis) x 100%
+                        • Frekuensi Absolut = Sub-plot Dihuni / Total Sub-plot<br>
+                        • Frekuensi Relatif (FR) = (Frekuensi Jenis / Total Seluruh Frekuensi) x 100%
                     </div>
 
-                    <h3 style="font-size: 1.1rem; color: var(--primary-dark); margin: 1.5rem 0 0.5rem 0;">C. Penentuan Akhir Indeks Nilai Penting</h3>
-                    <div class="formula-container" style="background-color: var(--soft-sage); border-left: 5px solid var(--primary-main);">
-                        Indeks Nilai Penting (INP) = Kerapatan Relatif (KR) + Frekuensi Relatif (FR)
+                    <h3 style="font-size: 1rem; color: var(--primary-dark); margin-top: 0.5rem;">Formulasi Akhir INP</h3>
+                    <div class="formula-container" style="background-color: var(--bg-botanical);">
+                        Indeks Nilai Penting (INP) = KR + FR (Skala 0 - 200%)
                     </div>
-                    <p>Skala akhir dari INP berkisar antara <strong>0% hingga 200%</strong> (karena menggabungkan dua parameter relatif). Spesies yang mendapatkan nilai tertinggi mendekati 200% dinilai sebagai "Key Species" atau fondasi utama penyokong kehidupan ekosistem di daerah tersebut.</p>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <footer>
-        &copy; 2026 EcoVeg Calc Pro — Media Evaluasi dan Komputasi Digital Ekologi Tumbuhan.
-    </footer>
+    <nav class="bottom-nav">
+        <a id="nav-home" class="nav-item active-nav" onclick="navigateTo('home-page')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span>Beranda</span>
+        </a>
+        <a id="nav-calc" class="nav-item" onclick="navigateTo('calc-page')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/><line x1="12" y1="9" x2="12" y2="17"/></svg>
+            <span>Kalkulator</span>
+        </a>
+        <a id="nav-doc" class="nav-item" onclick="navigateTo('doc-page')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <span>Panduan</span>
+        </a>
+    </nav>
 
     <script>
-        // --- CLEAN SINGLE PAGE ROUTER ---
+        // --- MOBILE SINGLE PAGE ROUTER ---
         function navigateTo(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active-nav'));
+            document.querySelectorAll('.nav-item').forEach(a => a.classList.remove('active-nav'));
 
             document.getElementById(pageId).classList.add('active');
 
@@ -528,22 +509,76 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // --- DINAMISASI INPUT BARIS TABLE ---
-        function addRow() {
+        // --- LOCAL STORAGE PERSISTENCE (ANTI-DATA HILANG DI HP) ---
+        function saveCurrentData() {
+            const config = {
+                totalArea: document.getElementById('total-area').value,
+                totalPlots: document.getElementById('total-plots').value
+            };
+            localStorage.setItem('ecoveg_config', JSON.stringify(config));
+
+            const names = document.querySelectorAll('.sp-name');
+            const counts = document.querySelectorAll('.sp-count');
+            const plots = document.querySelectorAll('.sp-plots');
+            
+            let listData = [];
+            for(let i=0; i<names.length; i++) {
+                listData.push({
+                    name: names[i].value,
+                    count: counts[i].value,
+                    plots: plots[i].value
+                });
+            }
+            localStorage.setItem('ecoveg_dataset', JSON.stringify(listData));
+        }
+
+        function loadSavedData() {
+            const savedConfig = localStorage.getItem('ecoveg_config');
+            if(savedConfig) {
+                const config = JSON.parse(savedConfig);
+                document.getElementById('total-area').value = config.totalArea;
+                document.getElementById('total-plots').value = config.totalPlots;
+            }
+
+            const savedDataset = localStorage.getItem('ecoveg_dataset');
+            const tbody = document.getElementById('species-table-body');
+            tbody.innerHTML = ''; 
+
+            if(savedDataset) {
+                const listData = JSON.parse(savedDataset);
+                if(listData.length > 0) {
+                    listData.forEach(item => {
+                        appendRowHTML(item.name, item.count, item.plots);
+                    });
+                    return;
+                }
+            }
+            // Default Fallback Data Lapangan Awal Mangrove jika Storage Kosong
+            appendRowHTML("Rhizophora apiculata", "40", "7");
+            appendRowHTML("Hibiscus tiliaceus", "25", "4");
+        }
+
+        function appendRowHTML(name, count, plots) {
             const tbody = document.getElementById('species-table-body');
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td><input type="text" class="sp-name" placeholder="Nama jenis tumbuhan..."></td>
-                <td><input type="number" class="sp-count" value="0"></td>
-                <td><input type="number" class="sp-plots" value="0"></td>
+                <td><input type="text" class="sp-name" value="${name}" placeholder="Nama spesies..." oninput="saveCurrentData()"></td>
+                <td><input type="number" class="sp-count" value="${count}" oninput="saveCurrentData()"></td>
+                <td><input type="number" class="sp-plots" value="${plots}" oninput="saveCurrentData()"></td>
                 <td style="text-align: center;"><button class="btn btn-danger" onclick="deleteRow(this)">Hapus</button></td>
             `;
             tbody.appendChild(tr);
         }
 
+        function addRow() {
+            appendRowHTML("", "0", "0");
+            saveCurrentData();
+        }
+
         function deleteRow(btn) {
             const row = btn.parentNode.parentNode;
             row.parentNode.removeChild(row);
+            saveCurrentData();
         }
 
         // --- MATEMATIKA ANALISIS VEGETASI ---
@@ -579,7 +614,7 @@
             }
 
             if (totalIndivGlobal === 0 || totalFreqAbsGlobal === 0) {
-                alert("Proses dibatalkan. Pastikan seluruh input angka jumlah individu dan sebaran petak terisi dengan benar!");
+                alert("Harap isi angka jumlah individu dan sub-plot hunian dengan benar!");
                 return;
             }
 
@@ -589,10 +624,8 @@
                 data.INP = data.KR + data.FR;
             });
 
-            // Sorting dominansi nilai tertinggi
             containerDataset.sort((a, b) => b.INP - a.INP);
 
-            // Render Output Tampilan Kanan
             const outputArea = document.getElementById('results-wrapper');
             outputArea.innerHTML = `
                 <div class="summary-box">
@@ -600,23 +633,31 @@
                     Total Spesimen Terdata: ${totalIndivGlobal} individu<br>
                     Total Kumulatif Frekuensi: ${totalFreqAbsGlobal.toFixed(2)}
                 </div>
-                <h4 style="margin: 1.25rem 0 0.5rem 0; font-size: 0.95rem; color: var(--primary-dark)">Urutan Dominansi Spesies (INP):</h4>
+                <h4 style="margin: 1rem 0 0.5rem 0; font-size: 0.9rem; color: var(--primary-dark)">Urutan Dominansi Spesies (INP):</h4>
             `;
 
             containerDataset.forEach((data, index) => {
                 const item = document.createElement('div');
                 item.className = 'list-item-result';
                 item.innerHTML = `
-                    <h4 style="font-size: 1.05rem;">Peringkat ${index + 1}: <em>${data.name}</em></h4>
-                    <p style="font-size: 0.9rem; margin-top: 0.35rem; color: var(--text-muted);">
-                        Kerapatan Relatif: <strong>${data.KR.toFixed(2)}%</strong> | 
+                    <h4 style="font-size: 0.95rem;">Peringkat ${index + 1}: <em>${data.name}</em></h4>
+                    <p style="font-size: 0.85rem; margin-top: 0.35rem; color: var(--text-muted);">
+                        Kerapatan Relatif: <strong>${data.KR.toFixed(2)}%</strong><br>
                         Frekuensi Relatif: <strong>${data.FR.toFixed(2)}%</strong><br>
                         <span style="color: var(--primary-main); font-weight:700;">Indeks Nilai Penting (INP): ${data.INP.toFixed(2)}%</span>
                     </p>
                 `;
                 outputArea.appendChild(item);
             });
+            
+            // Otomatis geser layar kebawah di mobile demi kenyamanan user setelah klik hitung
+            if(window.innerWidth < 992) {
+                outputArea.scrollIntoView({ behavior: 'smooth' });
+            }
         }
+
+        // Jalankan loading otomatis saat aplikasi dibuka pertama kali
+        window.onload = loadSavedData;
     </script>
 </body>
 </html>
