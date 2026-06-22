@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>EcoVeg Calc Pro — Aplikasi Analisis Vegetasi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* --- BRANDING COLOR PALETTE --- */
         :root {
@@ -27,33 +28,21 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        body {
+        /* ANTI-GESER: Mengunci viewport agar pas di layar HP Android */
+        html, body {
             background-color: var(--bg-botanical);
             color: var(--text-dark);
+            max-width: 100%;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            padding-bottom: 70px; /* Jarak aman agar konten tidak tertutup bottom nav */
-        }
-
-        /* --- HEADER BRANDING --- */
-        .app-header {
-            background-color: var(--primary-main);
-            color: white;
-            padding: 1.1rem 1.5rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(19, 42, 19, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-        }
-
-        .app-brand-title {
-            font-weight: 700;
-            font-size: 1.2rem;
-            letter-spacing: 0.5px;
+            padding-bottom: 75px; /* Jarak aman dari bottom nav */
         }
 
         /* --- MOBILE BOTTOM NAVIGATION --- */
@@ -171,7 +160,7 @@
             border-radius: 16px;
             text-align: center;
             box-shadow: 0 8px 24px rgba(19,42,19,0.12);
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.5rem;
         }
 
         .hero-text h1 {
@@ -192,6 +181,60 @@
             max-width: 160px;
             margin: 1rem auto 0 auto;
             display: block;
+        }
+
+        /* --- FEATURES CONTAINER --- */
+        .features-container {
+            margin-top: 1rem;
+            padding: 5px 0;
+        }
+
+        .features-title {
+            color: var(--primary-dark);
+            font-size: 1.05rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 12px 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-green);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        .feature-icon {
+            background: rgba(45, 106, 79, 0.08);
+            color: var(--primary-main);
+            padding: 10px;
+            border-radius: 10px;
+            margin-right: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+        }
+
+        .feature-text h4 {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .feature-text p {
+            margin: 2px 0 0 0;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.4;
         }
 
         /* --- PANELS CONFIGURATION --- */
@@ -225,13 +268,6 @@
             border-bottom: 2px solid var(--border-green);
         }
 
-        .input-inline-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
         .input-block {
             display: flex;
             flex-direction: column;
@@ -250,6 +286,7 @@
             border-radius: 8px;
             font-size: 0.95rem;
             outline: none;
+            width: 100%;
         }
 
         .input-block input:focus {
@@ -269,7 +306,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 450px; /* Mencegah tabel gepeng di layar HP */
+            min-width: 450px; 
         }
 
         th {
@@ -357,11 +394,6 @@
 </head>
 <body>
 
-    <header class="app-header">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22C12 22 20 18 20 12C20 6 12 2 12 2C12 2 4 6 4 12C4 18 12 22 12 22Z"/><path d="M12 2V22"/></svg>
-        <div class="app-brand-title">EcoVeg Calc Pro</div>
-    </header>
-
     <div id="home-page" class="page active">
         <div class="container">
             <div class="hero-section">
@@ -381,6 +413,34 @@
                     </svg>
                 </div>
             </div>
+
+            <div class="features-container">
+                <h3 class="features-title">Fitur Utama Aplikasi</h3>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-text">
+                        <h4>Analisis Otomatis Fast-Count</h4>
+                        <p>Hitung nilai Kerapatan, Frekuensi, hingga skor akhir INP secara instan dan presisi.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">🌿</div>
+                    <div class="feature-text">
+                        <h4>Standarisasi Laboratorium Ekologi</h4>
+                        <p>Sistem formulasi komparasi data disesuaikan dengan kurikulum riset hayati kuantitatif.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">💾</div>
+                    <div class="feature-text">
+                        <h4>Fitur Auto-Save Local Data</h4>
+                        <p>Data lapangan tersimpan aman di internal memori browser HP. Tidak takut hilang jika lembar reload.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -390,19 +450,24 @@
                 
                 <div class="panel">
                     <div class="panel-heading">Konfigurasi Data Lapangan</div>
-                    <div class="input-inline-group">
-                        <div class="input-block">
-                            <label>Luas Total Plot (m²)</label>
-                            <input type="number" id="total-area" value="100" oninput="saveCurrentData()">
+                    
+                    <div class="row g-3 mb-3">
+                        <div class="col-6">
+                            <div class="input-block">
+                                <label>Luas Total Plot (m²)</label>
+                                <input type="number" id="total-area" value="100" oninput="saveCurrentData()">
+                            </div>
                         </div>
-                        <div class="input-block">
-                            <label>Total Sub-Plot</label>
-                            <input type="number" id="total-plots" value="10" oninput="saveCurrentData()">
+                        <div class="col-6">
+                            <div class="input-block">
+                                <label>Total Sub-Plot</label>
+                                <input type="number" id="total-plots" value="10" oninput="saveCurrentData()">
+                            </div>
                         </div>
                     </div>
 
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                        <h3 style="font-size: 0.95rem; color: var(--primary-dark)">Data Spesies Tumbuhan</h3>
+                        <h3 style="font-size: 0.95rem; color: var(--primary-dark); margin: 0;">Data Spesies Tumbuhan</h3>
                         <button class="btn btn-primary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="addRow()">+ Tambah</button>
                     </div>
 
@@ -416,8 +481,7 @@
                                     <th style="width: 65px; text-align: center;">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody id="species-table-body">
-                                </tbody>
+                            <tbody id="species-table-body"></tbody>
                         </table>
                     </div>
 
@@ -443,37 +507,52 @@
         <div class="container">
             <div class="doc-wrapper">
                 <div class="doc-card">
-                    <h2>Mengenal Analisis Vegetasi</h2>
-                    <p>Di dalam ilmu ekologi, struktur tumbuhan diukur secara kuantitatif untuk memahami tingkat dominansi, stabilitas, dan dinamika kesehatan ekosistem tersebut.</p>
-                    <p>Aplikasi <strong>EcoVeg Calc Pro</strong> mengotomatisasi perhitungan <strong>Indeks Nilai Penting (INP)</strong>, memangkas risiko *human error* dari hitungan berulang di atas kertas logbook lapangan.</p>
+                    <h2>🌱 Mengenal Analisis Vegetasi dan INP</h2>
+                    <p>Di dalam ilmu ekologi, struktur komunitas tumbuhan diukur secara kuantitatif untuk memahami tingkat dominansi, stabilitas, dan dinamika kesehatan suatu ekosistem alam hayati.</p>
+                    <p>Analisis ini dilakukan dengan menghitung keberadaan jenis tumbuhan dalam area sampel tertentu. Aplikasi EcoVeg Calc Pro mengotomatisasi seluruh perhitungan Indeks Nilai Penting (INP), memangkas risiko kesalahan hitung dari kalkulasi manual berulang di atas kertas logbook lapangan.</p>
                 </div>
 
                 <div class="doc-card">
-                    <h2>Aplikasi di Dunia Nyata</h2>
-                    <p>Parameter olah data software ini dimanfaatkan secara profesional pada beberapa sektor industri ekologi:</p>
-                    <p>• <strong>Konservasi:</strong> Memantau tingkat keberhasilan reboisasi hutan asli dari gangguan jenis invasif.</p>
-                    <p>• <strong>AMDAL & Audit:</strong> Dokumen wajib reklamasi pascatambang untuk membuktikan pemulihan keanekaragaman alam.</p>
-                    <p>• <strong>Karbon Hutan:</strong> Penentuan biomassa tegakan komoditas untuk menghitung penyerapan emisi gas rumah kaca ($CO_2$).</p>
-                </div>
-
-                <div class="doc-card">
-                    <h2>Metodologi Rumus</h2>
-                    <h3 style="font-size: 1rem; color: var(--primary-dark); margin-top: 0.5rem;">Sektor Kerapatan</h3>
+                    <h2>📐 Metodologi Rumus Analisis Lengkap</h2>
+                    <p>Aplikasi ini memproses data lapangan berdasarkan standarisasi ekologi kuantitatif secara sistematis melalui tiga parameter utama:</p>
+                    
+                    <h3 style="font-size: 1rem; color: var(--primary-dark); margin-top: 0.75rem;">1. Sektor Kerapatan (Density)</h3>
+                    <p>Kerapatan digunakan untuk mengetahui jumlah individu suatu spesies tumbuhan dalam satuan luas lahan yang diamati.</p>
                     <div class="formula-container">
-                        • Kerapatan Absolut = Individu / Luas Plot (m²)<br>
-                        • Kerapatan Relatif (KR) = (Kerapatan Jenis / Total Seluruh Kerapatan) x 100%
+                        • Kerapatan Absolut = Jumlah Individu Spesies / Luas Total Plot (m²)<br>
+                        • Kerapatan Relatif (KR) = (Kerapatan Suatu Jenis / Total Kerapatan Seluruh Jenis) x 100%
                     </div>
 
-                    <h3 style="font-size: 1rem; color: var(--primary-dark); margin-top: 0.5rem;">Sektor Frekuensi</h3>
+                    <h3 style="font-size: 1rem; color: var(--primary-dark); margin-top: 0.75rem;">2. Sektor Frekuensi (Frequency)</h3>
+                    <p>Frekuensi digunakan untuk menggambarkan tingkat kemerataan atau persebaran penyebaran suatu spesies di seluruh area plot sampel.</p>
                     <div class="formula-container">
-                        • Frekuensi Absolut = Sub-plot Dihuni / Total Sub-plot<br>
-                        • Frekuensi Relatif (FR) = (Frekuensi Jenis / Total Seluruh Frekuensi) x 100%
+                        • Frekuensi Absolut = Jumlah Sub-plot yang Dihuni Spesies / Total Seluruh Sub-plot<br>
+                        • Frekuensi Relatif (FR) = (Frekuensi Suatu Jenis / Total Frekuensi Seluruh Jenis) x 100%
                     </div>
 
-                    <h3 style="font-size: 1rem; color: var(--primary-dark); margin-top: 0.5rem;">Formulasi Akhir INP</h3>
+                    <h3 style="font-size: 1rem; color: var(--primary-dark); margin-top: 0.75rem;">3. Formulasi Akhir INP</h3>
+                    <p>Indeks Nilai Penting didapatkan dari akumulasi persentase perbandingan peran jenis di lingkungannya.</p>
                     <div class="formula-container" style="background-color: var(--bg-botanical);">
-                        Indeks Nilai Penting (INP) = KR + FR (Skala 0 - 200%)
+                        Indeks Nilai Penting (INP) = Kerapatan Relatif (KR) + Frekuensi Relatif (FR)<br>
+                        Skala Nilai Akumulasi: Berada dalam rentang nilai 0 persen sampai 200 persen.
                     </div>
+                </div>
+
+                <div class="doc-card">
+                    <h2>💡 Langkah Detail Penggunaan Aplikasi</h2>
+                    <p>Ikuti prosedur hitung cepat berikut secara berurutan untuk mendapatkan hasil analisis yang akurat:</p>
+                    <p>• Langkah 1: Tentukan nilai batas atas area. Masukkan parameter Luas Total Plot dalam satuan meter persegi dan total kuantitas pecahan Sub-Plot yang disebar di lapangan.</p>
+                    <p>• Langkah 2: Tekan tombol Tambah pada kolom konfigurasi untuk memunculkan baris tabel baru untuk pengisian identitas tumbuhan.</p>
+                    <p>• Langkah 3: Ketik nama spesies tumbuhan yang ditemukan. Isi kolom Individu dengan total jumlah tumbuhan tersebut, lalu isi kolom Petak Hunian dengan jumlah sub-plot yang ditumbuhi oleh spesies tersebut.</p>
+                    <p>• Langkah 4: Klik tombol Proses Hitung Nilai Penting. Sistem akan menyusun hasil klasifikasi urutan peringkat ranking dominansi vegetasi secara otomatis dari nilai tertinggi.</p>
+                </div>
+
+                <div class="doc-card">
+                    <h2>🏢 Aplikasi di Dunia Nyata dan Industri</h2>
+                    <p>Parameter olah data software ini dimanfaatkan secara profesional pada berbagai sektor pengelolaan lingkungan hidup:</p>
+                    <p>• Konservasi dan Kehutanan: Berguna untuk memantau tingkat keberhasilan proyek reboisasi hutan asli serta mendeteksi ancaman invasi dari tumbuhan asing merugikan.</p>
+                    <p>• AMDAL dan Audit Lingkungan: Menjadi dokumen pelengkap wajib pada pemantauan reklamasi lahan pascatambang guna membuktikan pemulihan keanekaragaman hayati daerah operasional.</p>
+                    <p>• Analisis Karbon (Carbon Accounting): Digunakan dalam penentuan estimasi biomassa tegakan komoditas vegetasi untuk memetakan kapasitas penyerapan emisi gas rumah kaca atau karbon dioksida di atmosfer bumi.</p>
                 </div>
             </div>
         </div>
@@ -595,7 +674,7 @@
             let containerDataset = [];
 
             for (let i = 0; i < names.length; i++) {
-                let name = names[i].value.trim() || `Spesies Anonim ${i+1}`;
+                let name = names[i].value.trim() || "Spesies Anonim " + (i + 1);
                 let count = parseFloat(counts[i].value) || 0;
                 let plotCount = parseFloat(plots[i].value) || 0;
 
@@ -629,18 +708,18 @@
             const outputArea = document.getElementById('results-wrapper');
             outputArea.innerHTML = `
                 <div class="summary-box">
-                    <strong>Akumulasi Global Populasi:</strong><br>
+                    <strong>Bagian Ringkasan Akumulasi Populasi:</strong><br>
                     Total Spesimen Terdata: ${totalIndivGlobal} individu<br>
                     Total Kumulatif Frekuensi: ${totalFreqAbsGlobal.toFixed(2)}
                 </div>
-                <h4 style="margin: 1rem 0 0.5rem 0; font-size: 0.9rem; color: var(--primary-dark)">Urutan Dominansi Spesies (INP):</h4>
+                <h4 style="margin: 1rem 0 0.5rem 0; font-size: 0.9rem; color: var(--primary-dark)">Urutan Peringkat Dominansi Spesies Berdasarkan INP:</h4>
             `;
 
             containerDataset.forEach((data, index) => {
                 const item = document.createElement('div');
                 item.className = 'list-item-result';
                 item.innerHTML = `
-                    <h4 style="font-size: 0.95rem;">Peringkat ${index + 1}: <em>${data.name}</em></h4>
+                    <h4 style="font-size: 0.95rem;">Peringkat ${index + 1}: Tumbuhan ${data.name}</h4>
                     <p style="font-size: 0.85rem; margin-top: 0.35rem; color: var(--text-muted);">
                         Kerapatan Relatif: <strong>${data.KR.toFixed(2)}%</strong><br>
                         Frekuensi Relatif: <strong>${data.FR.toFixed(2)}%</strong><br>
@@ -650,13 +729,11 @@
                 outputArea.appendChild(item);
             });
             
-            // Otomatis geser layar kebawah di mobile demi kenyamanan user setelah klik hitung
             if(window.innerWidth < 992) {
                 outputArea.scrollIntoView({ behavior: 'smooth' });
             }
         }
 
-        // Jalankan loading otomatis saat aplikasi dibuka pertama kali
         window.onload = loadSavedData;
     </script>
 </body>
